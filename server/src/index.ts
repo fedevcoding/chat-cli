@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { Server } from "socket.io";
+import { parseBlob } from "./utils";
 const io = new Server({
   cors: {
     origin: "*",
@@ -13,13 +14,26 @@ const io = new Server({
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 io.on("connection", socket => {
-  console.log("Client connected");
+  const message: CLIENT_MESSAGE = {
+    payload: "Welcome to the chat!\nWhat's your name?",
+    name: "System",
+    type: "message",
+  };
+  socket.emit("message", message);
 
-  socket.emit("message", "Welcome to the chat!\nWhat's your name?");
+  socket.on("message", blob => {
+    const json: CLIENT_MESSAGE = parseBlob(blob);
 
-  socket.on("message", message => {
-    const json = JSON.parse(message.toString());
-    console.log(json);
+    if (json.type === "name") {
+      const message: CLIENT_MESSAGE = {
+        payload: `Welcome, ${json.payload.trim()}!`,
+        name: "System",
+        type: "message",
+      };
+      socket.emit("message", message);
+    } else if (json.type === "message") {
+      io.emit("message", json);
+    }
   });
 });
 

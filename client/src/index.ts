@@ -5,17 +5,31 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import io from "socket.io-client";
+import { removeLastLine } from "./utils";
 
 const socket = io("ws://localhost:3000", {
   reconnectionDelayMax: 10000,
 });
 
-let name: string | undefined = undefined;
+let name: string | null = null;
 
-socket.on("message", data => {
-  console.log(data.toString());
+socket.on("message", json => {
+  const message: CLIENT_MESSAGE = json;
+
+  const rightName = message.name ? (message.name === name ? "You" : message.name) : "";
+  console.log(`${rightName}: ${message.payload}`);
 });
 
 process.stdin.on("data", input => {
-  socket.send(input.toString());
+  const message: CLIENT_MESSAGE = {
+    name: name || "",
+    payload: input.toString(),
+    type: name ? "message" : "name",
+  };
+
+  if (!name) {
+    name = input.toString().trim();
+    removeLastLine();
+  }
+  socket.send(JSON.stringify(message));
 });
