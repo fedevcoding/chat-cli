@@ -29,6 +29,7 @@ process.stdin.on("data", input => {
 
   if (!name) {
     name = input.toString().trim();
+  } else {
     removeLastLine();
   }
   socket.send(JSON.stringify(message));
