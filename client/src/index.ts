@@ -1,49 +1,41 @@
 require("module-alias/register");
-
 import dotenv from "dotenv";
-import readline from "readline";
-
 dotenv.config();
-
 import io from "socket.io-client";
-import { removeLastLine } from "./utils";
+import { logger, removeLastLine } from "./utils";
+import { SERVER_URL } from "./constants";
+import { USER } from "./data/userInfo";
 
-const socket = io("ws://localhost:3000", {
-  reconnectionDelayMax: 10000,
+const socket = io(SERVER_URL);
+
+socket.on("connect", () => {
+  logger.info("System: ", "Connected to server");
+  logger.info("System: ", "Welcome to the chat, What's your name?");
 });
 
-let name: string | null = null;
-
-const init = () => {
-  const message: CLIENT_MESSAGE = {
-    payload: "Welcome to the chat!\nWhat's your name?",
-    name: "System",
-    type: "message",
-  };
-
-  console.log(`System: ${message.payload}`);
-};
-init();
-
 socket.on("message", json => {
+  const { name, id } = USER;
+
   if (!name) return;
-  const message: CLIENT_MESSAGE = json;
+  const message: MESSAGE = json;
 
-  const rightName = message.name ? (message.name === name ? "You" : message.name) : "";
+  const rightName = message.referenceId === id ? "You" : message.name;
 
-  if (message.name === name && message.type === "join") return;
-  console.log(`${rightName}: ${message.payload}`);
+  if (message.referenceId === id && message.type === "join") return;
+  logger.info(`${rightName}: `, message.payload);
 });
 
 process.stdin.on("data", input => {
-  const message: CLIENT_MESSAGE = {
-    name: name || "",
+  const { name, id } = USER;
+  const message: MESSAGE = {
+    name: USER.name || "",
     payload: input.toString(),
-    type: name ? "message" : "name",
+    referenceId: id,
+    type: USER.name ? "message" : "name",
   };
 
   if (!name) {
-    name = input.toString().trim();
+    USER.setName(input.toString().trim());
   } else {
     removeLastLine();
   }

@@ -15,26 +15,21 @@ const io = new Server({
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 io.on("connection", socket => {
-  const message: CLIENT_MESSAGE = {
-    payload: "Welcome to the chat!\nWhat's your name?",
-    name: "System",
-    type: "message",
-  };
-  socket.emit("message", message);
-
   socket.on("message", blob => {
-    const json: CLIENT_MESSAGE = parseBlob(blob);
+    const json: MESSAGE = parseBlob(blob);
 
     if (json.type === "name") {
-      const message: CLIENT_MESSAGE = {
+      const message: MESSAGE = {
         payload: `Welcome, ${json.payload.trim()}!`,
         name: "System",
         type: "message",
+        referenceId: json.referenceId,
       };
       socket.emit("message", message);
 
       io.emit("message", {
         payload: `${json.payload.trim()} has joined the chat!`,
+        referenceId: json.referenceId,
         name: "System",
         type: "join",
       });
