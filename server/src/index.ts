@@ -5,6 +5,7 @@ dotenv.config();
 
 import { Server } from "socket.io";
 import { parseBlob } from "./utils";
+
 const io = new Server({
   cors: {
     origin: "*",
@@ -31,6 +32,12 @@ io.on("connection", socket => {
         type: "message",
       };
       socket.emit("message", message);
+
+      io.emit("message", {
+        payload: `${json.payload.trim()} has joined the chat!`,
+        name: "System",
+        type: "join",
+      });
     } else if (json.type === "message") {
       io.emit("message", json);
     }
