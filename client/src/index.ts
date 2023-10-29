@@ -2,41 +2,56 @@ require("module-alias/register");
 import dotenv from "dotenv";
 dotenv.config();
 import io from "socket.io-client";
-import { logger, removeLastLine } from "./utils";
-import { SERVER_URL } from "./constants";
+import { formatName, logger, removeLastLine } from "./utils";
+import { SERVER_URL, SYSTEM_NAME } from "./constants";
 import { USER } from "./data/userInfo";
 
 const socket = io(SERVER_URL);
 
 socket.on("connect", () => {
-  logger.info("System: ", "Connected to server");
-  logger.info("System: ", "Welcome to the chat, What's your name?");
+  logger.info(`${SYSTEM_NAME}: `, "Connected to server");
+  logger.info(`${SYSTEM_NAME}: `, "Welcome to the chat, What's your name?");
 });
 
 socket.on("message", json => {
-  const { name, id } = USER;
+  const { id } = USER;
 
-  if (!name) return;
+  if (!USER.name) return;
   const message: MESSAGE = json;
 
-  const rightName = message.referenceId === id ? "You" : message.name;
-
+  // skip logging person joined if it's the current user
   if (message.referenceId === id && message.type === "join") return;
-  logger.info(`${rightName}: `, message.payload);
+
+  // format the name of based on who sent the message
+  const name = formatName(message.name, message.referenceId, USER.id, message.fromSystem);
+
+  logger.info(`${name}: `, message.payload, "\r");
+
+  // remove strange empty line forming with logger.info
+  if (!message.fromSystem) {
+    removeLastLine();
+  }
 });
 
 process.stdin.on("data", input => {
   const { name, id } = USER;
+
+  const msgType = name ? "message" : "name";
+
   const message: MESSAGE = {
-    name: USER.name || "",
+    name: USER.name,
     payload: input.toString(),
     referenceId: id,
-    type: USER.name ? "message" : "name",
+    type: msgType,
+    fromSystem: false,
   };
 
   if (!name) {
-    USER.setName(input.toString().trim());
+    const formattedName = input.toString().trim();
+    USER.setName(formattedName);
+    message["payload"] = formattedName;
   } else {
+    // removed typed line to auto log it in a better styled way
     removeLastLine();
   }
   socket.send(JSON.stringify(message));

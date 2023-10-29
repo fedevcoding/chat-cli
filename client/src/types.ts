@@ -3,6 +3,7 @@ type MESSAGE = {
   name: string | null;
   referenceId: string;
   payload: string;
+  fromSystem: boolean;
 };
 
 type USER_INFO = {

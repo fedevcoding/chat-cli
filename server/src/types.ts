@@ -3,4 +3,5 @@ type MESSAGE = {
   name: string | null;
   referenceId: string;
   payload: string;
+  fromSystem: boolean;
 };
