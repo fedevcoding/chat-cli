@@ -57,7 +57,7 @@ io.on("connection", socket => {
       fromSystem: true,
     };
     io.emit("message", message);
-    console.log("disconnecty");
+    // console.log("disconnecty");
   });
 });
 

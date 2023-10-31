@@ -10,4 +10,6 @@ type USER_INFO = {
   id: string;
   name: string | null;
   setName: (name: string) => void;
+  connected: boolean;
+  setConnected: (connected: boolean) => void;
 };

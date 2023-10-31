@@ -1,4 +1,3 @@
-import { SYSTEM_NAME } from "@/constants";
 import crypto from "crypto";
 import log from "npmlog";
 
