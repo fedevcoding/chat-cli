@@ -4,12 +4,14 @@ dotenv.config();
 import io from "socket.io-client";
 import { formatName, logger, removeLastLine } from "./utils";
 import { SERVER_URL, SYSTEM_NAME } from "./constants";
-import { ACTIONS, USER } from "./data/userInfo";
+import { ACTIONS, ACTION_VALUES, USER } from "./data/userInfo";
 import inquirer from "inquirer";
 
 const init = async () => {
   process.stdin.pause();
-  const ansers = await inquirer.prompt([
+  const answer: {
+    action: ACTION_VALUES;
+  } = await inquirer.prompt([
     {
       type: "list",
       name: "action",
@@ -19,12 +21,23 @@ const init = async () => {
     },
   ]);
   process.stdin.resume();
-  main();
+
+  const { action } = answer;
+
+  main(action);
 };
 
 init();
 
-const main = () => {
+const main = (action: ACTION_VALUES) => {
+  // switch(action) {
+  //   case "Join global chat":
+  //     USER.setChannel({type: "global"})
+  //     break
+  //   case "Join public chat":
+  //     USER.setChannel({type: })
+  // }
+
   const socket = io(SERVER_URL);
 
   socket.on("connect", async () => {

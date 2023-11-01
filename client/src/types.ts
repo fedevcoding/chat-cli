@@ -12,4 +12,22 @@ type USER_INFO = {
   setName: (name: string) => void;
   connected: boolean;
   setConnected: (connected: boolean) => void;
+  channel: CHANNEL_TYPE | null;
+  setChannel: (channel: CHANNEL_TYPE) => void;
 };
+
+type CHANNEL_TYPE =
+  | {
+      type: "global";
+    }
+  | {
+      type: "public";
+      channelId: string;
+    }
+  | {
+      type: "private";
+      channelId: string;
+      password: string;
+    };
+
+type ObjectValues<T> = T[keyof T];
