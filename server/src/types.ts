@@ -5,3 +5,10 @@ type MESSAGE = {
   payload: string;
   fromSystem: boolean;
 };
+
+type PUBLIC_CHANNEL = {
+  type: "public";
+  name: string;
+  id: string;
+  users: string[];
+};
