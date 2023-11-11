@@ -1,17 +1,33 @@
+import { addPublicChannel, getPublicChannels, removePublicChannel } from "@/cache/publicChannels";
+import { getRandomId } from "@/utils";
 import express from "express";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send("Hello world!");
+  const channels = getPublicChannels();
+
+  res.send(channels);
 });
 
 router.post("/", (req, res) => {
-  res.send("Hello world!");
+  const { name } = req.body;
+  const channel: PUBLIC_CHANNEL = {
+    id: getRandomId(),
+    name,
+    type: "public",
+    users: [],
+  };
+  addPublicChannel(channel);
+
+  res.send(channel);
 });
 
 router.delete("/", (req, res) => {
-  res.send("Hello world!");
+  const { id } = req.body;
+  removePublicChannel(id);
+
+  res.send(id);
 });
 
 export default router;
