@@ -1,6 +1,7 @@
 import { USER } from "./data/userInfo";
 import { getAction } from "./utils/getAction";
 import { joinGlobalChat } from "./channels/globalChat";
+import { SERVER_URL } from "./constants";
 
 export async function main() {
   const action = await getAction();
@@ -10,7 +11,10 @@ export async function main() {
       USER.setChannel({ type: "global" });
       joinGlobalChat();
       break;
-    case "Create public chat":
+    case "Join public chat":
+      const data = await fetch(SERVER_URL + "/publicChannels");
+      const channels = await data.json();
+      console.log(channels);
       // USER.setChannel({ type: "public" });
       break;
     // case "Join public chat":

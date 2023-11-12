@@ -1,5 +1,6 @@
 export const PORT = 3000;
-export const SERVER_URL = `ws://localhost:${PORT}`;
+export const WS_SERVER_URL = `ws://localhost:${PORT}`;
+export const SERVER_URL = `http://localhost:${PORT}`;
 
 export const SYSTEM_NAME = "System";
 

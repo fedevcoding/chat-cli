@@ -10,5 +10,5 @@ type PUBLIC_CHANNEL = {
   type: "public";
   name: string;
   id: string;
-  users: string[];
+  users: number;
 };

@@ -1,10 +1,10 @@
 import io from "socket.io-client";
 import { formatName, logger, removeLastLine } from "@/utils";
-import { SERVER_URL, SYSTEM_NAME } from "@/constants";
+import { WS_SERVER_URL, SYSTEM_NAME } from "@/constants";
 import { USER } from "@/data/userInfo";
 
 export const joinGlobalChat = () => {
-  const socket = io(SERVER_URL);
+  const socket = io(WS_SERVER_URL);
 
   socket.on("connect", async () => {
     USER.setConnected(true);

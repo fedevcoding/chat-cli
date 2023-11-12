@@ -16,7 +16,7 @@ router.post("/", (req, res) => {
     id: getRandomId(),
     name,
     type: "public",
-    users: [],
+    users: 0,
   };
   addPublicChannel(channel);
 
