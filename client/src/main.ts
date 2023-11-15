@@ -3,6 +3,7 @@ import { getAction } from "./utils/getAction";
 import { joinGlobalChat } from "./channels/globalChat";
 // import { SERVER_URL } from "./constants";
 import { choosePublicChannel } from "./utils/getPublicChannels";
+import { createPublicChannel } from "./utils/createPublicChannel";
 
 export async function main() {
   const action = await getAction();
@@ -16,6 +17,8 @@ export async function main() {
       choosePublicChannel();
       // USER.setChannel({ type: "public" });
       break;
+    case "Create public chat":
+      createPublicChannel();
     // case "Join public chat":
     //   USER.setChannel({ type: "public" });
     //   break;

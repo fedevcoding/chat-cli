@@ -14,6 +14,19 @@ class Server {
       throw err;
     }
   }
+
+  async createPublicChannel(channelName: string) {
+    try {
+      const data = await axios.post(SERVER_ROUTES.PUBLIC_CHANNELS, {
+        name: channelName,
+      });
+      const channel = data.data;
+
+      return channel;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export const server = new Server();
