@@ -31,3 +31,10 @@ type CHANNEL_TYPE =
     };
 
 type ObjectValues<T> = T[keyof T];
+
+// type PUBLIC_CHANNEL = {
+//   type: "public";
+//   name: string;
+//   id: string;
+//   users: number;
+// };

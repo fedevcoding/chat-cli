@@ -5,5 +5,5 @@ export const SERVER_URL = `http://localhost:${PORT}`;
 export const SYSTEM_NAME = "System";
 
 export const SERVER_ROUTES = {
-  PUBLIC_CHANNELS: "/publicChannels",
+  PUBLIC_CHANNELS: `${SERVER_URL}/publicChannels`,
 } as const;
