@@ -1,7 +1,6 @@
 import { USER } from "./data/userInfo";
 import { getAction } from "./utils/getAction";
-import { joinGlobalChat } from "./channels/globalChat";
-// import { SERVER_URL } from "./constants";
+import { joinChat } from "./channels/chat";
 import { choosePublicChannel } from "./utils/getPublicChannels";
 import { createPublicChannel } from "./utils/createPublicChannel";
 
@@ -11,14 +10,20 @@ export async function main() {
   switch (action) {
     case "Join global chat":
       USER.setChannel({ type: "global" });
-      joinGlobalChat();
+      joinChat();
       break;
     case "Join public chat":
-      choosePublicChannel();
-      // USER.setChannel({ type: "public" });
+      const chatId = await choosePublicChannel();
+      USER.setChannel({ type: "public", channelId: chatId });
+      joinChat();
+
       break;
     case "Create public chat":
-      createPublicChannel();
+      const channelId = await createPublicChannel();
+      USER.setChannel({ type: "public", channelId });
+      joinChat();
+
+      break;
     // case "Join public chat":
     //   USER.setChannel({ type: "public" });
     //   break;

@@ -12,3 +12,11 @@ type PUBLIC_CHANNEL = {
   id: string;
   users: number;
 };
+
+type PRIVATE_CHANNEL = {
+  type: "private";
+  name: string;
+  id: string;
+  password: string;
+  users: number;
+};

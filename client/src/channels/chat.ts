@@ -3,8 +3,10 @@ import { formatName, logger, removeLastLine } from "@/utils";
 import { WS_SERVER_URL, SYSTEM_NAME } from "@/constants";
 import { USER } from "@/data/userInfo";
 
-export const joinGlobalChat = () => {
-  const socket = io(WS_SERVER_URL);
+export const joinChat = () => {
+  const socket = io(WS_SERVER_URL, {
+    query: { ...USER.channel },
+  });
 
   socket.on("connect", async () => {
     USER.setConnected(true);
