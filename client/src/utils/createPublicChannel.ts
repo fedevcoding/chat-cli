@@ -16,9 +16,8 @@ export async function createPublicChannel(): Promise<string> {
     const { channelName } = answer;
 
     const channelData = await server.createPublicChannel(channelName);
-    const { id } = channelData;
 
-    return id;
+    return channelData.id;
   } catch (err) {
     throw err;
   }

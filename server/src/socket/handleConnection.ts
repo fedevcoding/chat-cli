@@ -13,19 +13,25 @@ export function handleSocketConnection(io: Server) {
       return;
     }
 
-    if (type === "private") {
-      if (typeof channelId !== "string" || typeof password !== "string") {
-        socket.disconnect();
-        return;
-      }
-      const valid = validPassword(channelId, password);
-      if (!valid) {
-        socket.disconnect();
-        return;
-      }
-    }
+    // if (type === "private") {
+    //   if (typeof channelId !== "string" || typeof password !== "string") {
+    //     socket.disconnect();
+    //     return;
+    //   }
+    //   const valid = validPassword(channelId, password);
+    //   if (!valid) {
+    //     socket.disconnect();
+    //     return;
+    //   }
+    // }
 
-    console.log(channelId, type, password);
+    const socketRoom = type === "public" ? (channelId as string) : "global";
+
+    if (type === "public") {
+      socket.join(socketRoom);
+    } else {
+      socket.join(socketRoom);
+    }
 
     let name = "";
     let id = "";
@@ -53,9 +59,9 @@ export function handleSocketConnection(io: Server) {
           fromSystem: true,
         };
 
-        io.emit("message", message2);
+        io.to(socketRoom).emit("message", message2);
       } else if (json.type === "message") {
-        io.emit("message", json);
+        io.to(socketRoom).emit("message", json);
       }
     });
 
@@ -67,7 +73,8 @@ export function handleSocketConnection(io: Server) {
         referenceId: id,
         fromSystem: true,
       };
-      io.emit("message", message);
+      socket.leave(socketRoom);
+      io.to(socketRoom).emit("message", message);
       // console.log("disconnecty");
     });
   });
