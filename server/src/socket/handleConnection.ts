@@ -75,7 +75,6 @@ export function handleSocketConnection(io: Server) {
       };
       socket.leave(socketRoom);
       io.to(socketRoom).emit("message", message);
-      // console.log("disconnecty");
     });
   });
 }

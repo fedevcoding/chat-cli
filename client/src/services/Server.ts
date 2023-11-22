@@ -4,9 +4,9 @@ import axios from "axios";
 class Server {
   constructor() {}
 
-  async fetchPublicChannels() {
+  async fetchPublicChannels(): Promise<PUBLIC_CHANNEL[]> {
     try {
-      const data = await axios.get(SERVER_ROUTES.PUBLIC_CHANNELS);
+      const data = await axios.get<PUBLIC_CHANNEL[]>(SERVER_ROUTES.PUBLIC_CHANNELS);
       const channels = data.data;
 
       return channels;
