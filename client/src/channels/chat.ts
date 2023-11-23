@@ -41,6 +41,15 @@ export const joinChat = () => {
     if (!connected) return;
 
     const msgType = name ? "message" : "name";
+
+    if (!name) {
+      const formattedName = input.toString().trim();
+      USER.setName(formattedName);
+    } else {
+      // removed typed line to auto log it in a better styled way
+      removeLastLine();
+    }
+
     const message: MESSAGE = {
       name: USER.name,
       payload: input.toString(),
@@ -48,14 +57,7 @@ export const joinChat = () => {
       type: msgType,
       fromSystem: false,
     };
-    if (!name) {
-      const formattedName = input.toString().trim();
-      USER.setName(formattedName);
-      message["payload"] = formattedName;
-    } else {
-      // removed typed line to auto log it in a better styled way
-      removeLastLine();
-    }
+
     socket.send(JSON.stringify(message));
   });
 };

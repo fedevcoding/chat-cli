@@ -3,6 +3,7 @@ import { getAction } from "./utils/getAction";
 import { joinChat } from "./channels/chat";
 import { choosePublicChannel } from "./utils/getPublicChannels";
 import { createPublicChannel } from "./utils/createPublicChannel";
+import { AxiosError } from "axios";
 
 export async function main() {
   try {
@@ -34,6 +35,11 @@ export async function main() {
         break;
     }
   } catch (e) {
+    if (e instanceof AxiosError) {
+      console.log(e.response?.data);
+      return;
+    }
     console.log("Something went wrong, try again later.");
+    return;
   }
 }

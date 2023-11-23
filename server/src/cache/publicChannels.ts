@@ -1,6 +1,7 @@
 export const publicChannels: PUBLIC_CHANNEL[] = [];
 
 export const addPublicChannel = (channel: PUBLIC_CHANNEL) => {
+  if (publicChannels.find(c => c.name === channel.name)) throw new Error("Channel name already exists");
   publicChannels.push(channel);
 };
 

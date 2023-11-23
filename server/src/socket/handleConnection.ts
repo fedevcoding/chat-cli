@@ -3,6 +3,7 @@ import { SYSTEM_NAME } from "@/constants";
 
 import { Server } from "socket.io";
 import { validPassword } from "@/cache/privateChannels";
+import { User } from "@/services/User";
 
 export function handleSocketConnection(io: Server) {
   io.on("connection", socket => {
@@ -27,53 +28,63 @@ export function handleSocketConnection(io: Server) {
 
     const socketRoom = type === "public" ? (channelId as string) : "global";
 
-    if (type === "public") {
-      socket.join(socketRoom);
-    } else {
-      socket.join(socketRoom);
-    }
+    // if (type === "public") {
+    //   socket.join(socketRoom);
+    // } else {
+    // }
+    // to check for private channel (require password)
 
-    let name = "";
-    let id = "";
+    socket.join(socketRoom);
+
+    const SocketUser = new User();
 
     socket.on("message", blob => {
-      const json: MESSAGE = parseBlob(blob);
+      const message: MESSAGE = parseBlob(blob);
 
-      if (json.type === "name") {
-        name = json.payload;
-        id = json.referenceId;
+      const { type, payload, fromSystem, name, referenceId } = message;
+
+      if (type === "name") {
+        if (!name || !referenceId) {
+          socket.disconnect();
+          return;
+        }
+
+        SocketUser.setUser(name, referenceId);
+
         const message: MESSAGE = {
           name: SYSTEM_NAME,
-          payload: `Welcome, ${json.payload}!`,
+          payload: `Welcome, ${name}!`,
           type: "message",
-          referenceId: json.referenceId,
+          referenceId,
           fromSystem: true,
         };
         socket.emit("message", message);
 
         const message2: MESSAGE = {
           name: SYSTEM_NAME,
-          payload: `${json.payload} has joined the chat!`,
+          payload: `${name} has joined the chat!`,
           type: "join",
-          referenceId: json.referenceId,
+          referenceId,
           fromSystem: true,
         };
 
         io.to(socketRoom).emit("message", message2);
-      } else if (json.type === "message") {
-        io.to(socketRoom).emit("message", json);
+      } else if (type === "message") {
+        io.to(socketRoom).emit("message", message);
       }
     });
 
     socket.on("disconnect", () => {
+      socket.leave(socketRoom);
+
+      if (!SocketUser.isActivated) return;
       const message: MESSAGE = {
         name: SYSTEM_NAME,
-        payload: `${name} has left the chat :/`,
+        payload: `${SocketUser.name} has left the chat :/`,
         type: "leave",
-        referenceId: id,
+        referenceId: SocketUser.id,
         fromSystem: true,
       };
-      socket.leave(socketRoom);
       io.to(socketRoom).emit("message", message);
     });
   });
