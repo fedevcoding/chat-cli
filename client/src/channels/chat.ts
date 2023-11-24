@@ -2,20 +2,37 @@ import io from "socket.io-client";
 import { formatName, logger, removeLastLine } from "@/utils";
 import { WS_SERVER_URL, SYSTEM_NAME } from "@/constants";
 import { USER } from "@/data/userInfo";
+import { main } from "@/main";
 
 export const joinChat = () => {
   const socket = io(WS_SERVER_URL, {
     query: { ...USER.channel },
   });
 
-  socket.on("connect", async () => {
-    USER.setConnected(true);
-
-    logger.info(`${SYSTEM_NAME}: `, "Connected to server");
-    logger.info(`${SYSTEM_NAME}: `, "Welcome to the chat, What's your name?");
-  });
-
   socket.on("message", async json => {
+    if (json === "connected") {
+      USER.setConnected(true);
+
+      logger.info(`${SYSTEM_NAME}: `, "Connected to server");
+      logger.info(`${SYSTEM_NAME}: `, "Welcome to the chat, What's your name?");
+
+      return;
+    }
+
+    if (json === "wrongpassword") {
+      logger.info(`${SYSTEM_NAME}: `, "Wrong password.\n");
+      socket.disconnect();
+      main();
+      return;
+    }
+
+    if (json === "connerr") {
+      logger.info(`${SYSTEM_NAME}: `, "Something went wrong while connecting.\n");
+      socket.disconnect();
+      main();
+      return;
+    }
+
     const { id } = USER;
 
     if (!USER.name) return;

@@ -4,6 +4,8 @@ import { joinChat } from "./channels/chat";
 import { choosePublicChannel } from "./utils/getPublicChannels";
 import { createPublicChannel } from "./utils/createPublicChannel";
 import { AxiosError } from "axios";
+import { createPrivateChannel } from "./utils/createPrivateChannel";
+import { choosePrivateChannel } from "./utils/getPrivateChannels";
 
 export async function main() {
   try {
@@ -26,9 +28,18 @@ export async function main() {
         joinChat();
 
         break;
-      // case "Join public chat":
-      //   USER.setChannel({ type: "public" });
-      //   break;
+
+      case "Crate private chat":
+        const { id, password } = await createPrivateChannel();
+        USER.setChannel({ type: "private", channelId: id, password });
+        joinChat();
+        break;
+
+      case "Join private chat":
+        const data = await choosePrivateChannel();
+        USER.setChannel({ type: "private", channelId: data.id, password: data.password });
+        joinChat();
+        break;
 
       default:
         console.log("Invalid action");

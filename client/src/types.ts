@@ -37,3 +37,9 @@ type PUBLIC_CHANNEL = {
   id: string;
   users: number;
 };
+
+type PRIVATE_CHANNEL = {
+  name: string;
+  id: string;
+  users: number;
+};

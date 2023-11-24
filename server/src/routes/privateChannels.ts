@@ -1,4 +1,4 @@
-import { addPublicChannel, getPublicChannels } from "@/cache/publicChannels";
+import { addPrivateChannel, getPivateChannels } from "@/cache/privateChannels";
 import { getRandomId, handleServerError } from "@/utils";
 import express from "express";
 
@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   try {
-    const channels = getPublicChannels();
+    const channels = getPivateChannels();
 
     res.send(channels);
   } catch (e) {
@@ -16,22 +16,23 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, password } = req.body;
 
-    if (typeof name !== "string") {
+    if (typeof name !== "string" || typeof password !== "string") {
       res.status(400).json({
         message: "Invalid request",
       });
       return;
     }
 
-    const channel: PUBLIC_CHANNEL = {
+    const channel: PRIVATE_CHANNEL = {
       id: getRandomId(),
       name,
-      type: "public",
+      type: "private",
+      password: password,
       users: 0,
     };
-    addPublicChannel(channel);
+    addPrivateChannel(channel);
 
     res.send(channel);
   } catch (e) {

@@ -6,4 +6,5 @@ export const SYSTEM_NAME = "System";
 
 export const SERVER_ROUTES = {
   PUBLIC_CHANNELS: `${SERVER_URL}/publicChannels`,
+  PRIVATE_CHANNELS: `${SERVER_URL}/privateChannels`,
 } as const;

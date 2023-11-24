@@ -1,6 +1,7 @@
 export const privateChannels: PRIVATE_CHANNEL[] = [];
 
 export const addPrivateChannel = (channel: PRIVATE_CHANNEL) => {
+  if (privateChannels.find(c => c.name === channel.name)) throw new Error("Channel name already exists");
   privateChannels.push(channel);
 };
 
@@ -9,12 +10,27 @@ export const removePrivateChannel = (channelId: string) => {
   privateChannels.splice(index, 1);
 };
 
-export const getPrivateChannels = () => {
+export const getPivateChannels = () => {
   return privateChannels;
 };
 
-export const validPassword = (password: string, channelId: string): boolean => {
+export const addUserToPrivateChannel = (channelId: string) => {
+  const channel = privateChannels.find(channel => channel.id === channelId);
+  if (!channel) throw new Error("Channel not found");
+  channel.users++;
+};
+
+export const removeUserFromPrivateChannel = (channelId: string) => {
+  const channel = privateChannels.find(channel => channel.id === channelId);
+  if (!channel) throw new Error("Channel not found");
+  channel.users--;
+
+  if (channel.users === 0) removePrivateChannel(channelId);
+};
+
+export const validPassword = (channelId: string, password: string): boolean => {
   const channel = privateChannels.find(channel => channel.id === channelId);
   if (!channel) return false;
+
   return channel.password === password;
 };

@@ -10,6 +10,10 @@ export const removePublicChannel = (channelId: string) => {
   publicChannels.splice(index, 1);
 };
 
+export const getPublicChannels = () => {
+  return publicChannels;
+};
+
 export const addUserToPublicChannel = (channelId: string) => {
   const channel = publicChannels.find(channel => channel.id === channelId);
   if (!channel) throw new Error("Channel not found");
@@ -22,8 +26,4 @@ export const removeUserFromPublicChannel = (channelId: string) => {
   channel.users--;
 
   if (channel.users === 0) removePublicChannel(channelId);
-};
-
-export const getPublicChannels = () => {
-  return publicChannels;
 };
