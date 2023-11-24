@@ -1,4 +1,4 @@
-import { addPublicChannel, getPublicChannels, removePublicChannel } from "@/cache/publicChannels";
+import { addPublicChannel, getPublicChannels } from "@/cache/publicChannels";
 import { getRandomId, handleServerError } from "@/utils";
 import express from "express";
 
@@ -26,17 +26,6 @@ router.post("/", (req, res) => {
     addPublicChannel(channel);
 
     res.send(channel);
-  } catch (e) {
-    handleServerError(e, res);
-  }
-});
-
-router.delete("/", (req, res) => {
-  try {
-    const { id } = req.body;
-    removePublicChannel(id);
-
-    res.send(id);
   } catch (e) {
     handleServerError(e, res);
   }

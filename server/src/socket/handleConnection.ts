@@ -4,12 +4,13 @@ import { SYSTEM_NAME } from "@/constants";
 import { Server } from "socket.io";
 import { validPassword } from "@/cache/privateChannels";
 import { User } from "@/services/User";
+import { addUserToPublicChannel, removeUserFromPublicChannel } from "@/cache/publicChannels";
 
 export function handleSocketConnection(io: Server) {
   io.on("connection", socket => {
-    const { channelId, type, password } = socket.handshake.query || {};
+    const query: SocketQuery = (socket.handshake.query || {}) as SocketQuery;
 
-    if (!type) {
+    if (!query.type) {
       socket.disconnect();
       return;
     }
@@ -26,7 +27,11 @@ export function handleSocketConnection(io: Server) {
     //   }
     // }
 
-    const socketRoom = type === "public" ? (channelId as string) : "global";
+    const socketRoom = query.type === "public" ? query.channelId : "global";
+
+    if (query.type !== "global") {
+      if (query.type === "public") addUserToPublicChannel(query.channelId);
+    }
 
     // if (type === "public") {
     //   socket.join(socketRoom);
@@ -76,6 +81,10 @@ export function handleSocketConnection(io: Server) {
 
     socket.on("disconnect", () => {
       socket.leave(socketRoom);
+
+      if (query.type !== "global") {
+        if (query.type === "public") removeUserFromPublicChannel(query.channelId);
+      }
 
       if (!SocketUser.isActivated) return;
       const message: MESSAGE = {

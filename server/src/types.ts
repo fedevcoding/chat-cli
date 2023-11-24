@@ -20,3 +20,17 @@ type PRIVATE_CHANNEL = {
   password: string;
   users: number;
 };
+
+type SocketQuery =
+  | {
+      type: "global";
+    }
+  | {
+      type: "public";
+      channelId: string;
+    }
+  | {
+      type: "private";
+      channelId: string;
+      password: string;
+    };

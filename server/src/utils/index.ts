@@ -11,7 +11,10 @@ export const getRandomId = () => {
 };
 
 export const handleServerError = (e: unknown, res: Response) => {
-  if (e instanceof Error) res.status(500).json(e.message);
+  if (e instanceof Error) {
+    res.status(500).json(e.message);
+    return;
+  }
   res.status(500).json({
     message: "Something went wrong",
   });
