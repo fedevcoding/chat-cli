@@ -24,7 +24,7 @@ export function handleSocketConnection(io: Server) {
       }
     }
 
-    io.send("connected");
+    socket.send("connected");
 
     const socketRoom = query.type === "public" ? query.channelId : "global";
 
