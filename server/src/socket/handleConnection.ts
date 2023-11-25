@@ -26,7 +26,7 @@ export function handleSocketConnection(io: Server) {
 
     socket.send("connected");
 
-    const socketRoom = query.type === "public" ? query.channelId : "global";
+    const socketRoom = query.type === "public" || query.type === "private" ? query.channelId : "global";
 
     if (query.type !== "global") {
       if (query.type === "public") addUserToPublicChannel(query.channelId);
@@ -40,7 +40,7 @@ export function handleSocketConnection(io: Server) {
     socket.on("message", blob => {
       const message: MESSAGE = parseBlob(blob);
 
-      const { type, payload, fromSystem, name, referenceId } = message;
+      const { type, name, referenceId } = message;
 
       if (type === "name") {
         if (!name || !referenceId) {
@@ -57,7 +57,7 @@ export function handleSocketConnection(io: Server) {
           referenceId,
           fromSystem: true,
         };
-        socket.emit("message", message);
+        io.to(socketRoom).emit("message", message);
 
         const message2: MESSAGE = {
           name: SYSTEM_NAME,
