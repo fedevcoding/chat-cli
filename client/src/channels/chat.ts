@@ -2,7 +2,6 @@ import io from "socket.io-client";
 import { formatName, logger, removeLastLine } from "@/utils";
 import { WS_SERVER_URL, SYSTEM_NAME } from "@/constants";
 import { USER } from "@/data/userInfo";
-import { main } from "@/main";
 
 export const joinChat = () => {
   if (!USER.channel) {
@@ -26,17 +25,15 @@ export const joinChat = () => {
     }
 
     if (message === "wrongpassword") {
-      logger.info(`${SYSTEM_NAME}: `, "Wrong password.\n");
-      socket.disconnect();
-      main();
-      return;
+      logger.info(`${SYSTEM_NAME}: `, "Wrong password.");
+      console.log("\n");
+      process.exit(1);
     }
 
     if (message === "connerr") {
-      logger.info(`${SYSTEM_NAME}: `, "Something went wrong while connecting.\n");
-      socket.disconnect();
-      main();
-      return;
+      logger.info(`${SYSTEM_NAME}: `, "Something went wrong while connecting.");
+      console.log("\n");
+      process.exit(1);
     }
 
     const { id } = USER;

@@ -11,7 +11,6 @@ export function handleSocketConnection(io: Server) {
     const query: SocketQuery = (socket.handshake.query || {}) as SocketQuery;
     if (!query.type) {
       socket.emit("message", "connerr");
-      socket.disconnect();
       return;
     }
 
@@ -19,7 +18,6 @@ export function handleSocketConnection(io: Server) {
       const valid = validPassword(query.channelId, query.password);
       if (!valid) {
         socket.emit("message", "wrongpassword");
-        socket.disconnect();
         return;
       }
     }
