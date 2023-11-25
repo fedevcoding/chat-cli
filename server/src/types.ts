@@ -1,3 +1,9 @@
+const enum CHANNEL_TYPES {
+  GLOBAL = "global",
+  PRIVATE = "private",
+  PUBLIC = "public",
+}
+
 type MESSAGE = {
   type: "name" | "message" | "join" | "leave";
   name: string | null;
@@ -6,20 +12,20 @@ type MESSAGE = {
   fromSystem: boolean;
 };
 
-type PUBLIC_CHANNEL = {
-  type: "public";
-  name: string;
-  id: string;
-  users: number;
-};
-
-type PRIVATE_CHANNEL = {
-  type: "private";
-  name: string;
-  id: string;
-  password: string;
-  users: number;
-};
+type CHANNEL<T extends CHANNEL_TYPES> = T extends CHANNEL_TYPES.PRIVATE
+  ? {
+      type: T;
+      name: string;
+      id: string;
+      users: number;
+      password: string;
+    }
+  : {
+      type: T;
+      name: string;
+      id: string;
+      users: number;
+    };
 
 type SocketQuery =
   | {

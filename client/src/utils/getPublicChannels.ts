@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import { server } from "@/services/Server";
 
-export async function choosePublicChannel(): Promise<PUBLIC_CHANNEL["id"]> {
+export async function choosePublicChannel(): Promise<CHANNEL["id"]> {
   try {
     console.log("Fetching public channels...");
 

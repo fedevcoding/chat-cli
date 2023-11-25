@@ -13,31 +13,31 @@ export async function main() {
 
     switch (action) {
       case "Join global chat":
-        USER.setChannel({ type: "global" });
+        USER.setChannel({ type: CHANNEL_TYPES.GLOBAL });
         joinChat();
         break;
       case "Join public chat":
         const chatId = await choosePublicChannel();
-        USER.setChannel({ type: "public", channelId: chatId });
+        USER.setChannel({ type: CHANNEL_TYPES.PUBLIC, channelId: chatId });
         joinChat();
 
         break;
       case "Create public chat":
         const channelId = await createPublicChannel();
-        USER.setChannel({ type: "public", channelId });
+        USER.setChannel({ type: CHANNEL_TYPES.PUBLIC, channelId });
         joinChat();
 
         break;
 
       case "Crate private chat":
         const { id, password } = await createPrivateChannel();
-        USER.setChannel({ type: "private", channelId: id, password });
+        USER.setChannel({ type: CHANNEL_TYPES.PRIVATE, channelId: id, password });
         joinChat();
         break;
 
       case "Join private chat":
         const data = await choosePrivateChannel();
-        USER.setChannel({ type: "private", channelId: data.id, password: data.password });
+        USER.setChannel({ type: CHANNEL_TYPES.PRIVATE, channelId: data.id, password: data.password });
         joinChat();
         break;
 

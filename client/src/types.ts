@@ -1,3 +1,9 @@
+const enum CHANNEL_TYPES {
+  GLOBAL = "global",
+  PRIVATE = "private",
+  PUBLIC = "public",
+}
+
 type MESSAGE = {
   type: "name" | "message" | "join" | "leave";
   name: string | null;
@@ -18,6 +24,20 @@ type USER_INFO = {
 
 type CHANNEL_TYPE =
   | {
+      type: CHANNEL_TYPES.GLOBAL;
+    }
+  | {
+      type: CHANNEL_TYPES.PUBLIC;
+      channelId: string;
+    }
+  | {
+      type: CHANNEL_TYPES.PRIVATE;
+      channelId: string;
+      password: string;
+    };
+
+type SocketQuery =
+  | {
       type: "global";
     }
   | {
@@ -30,16 +50,14 @@ type CHANNEL_TYPE =
       password: string;
     };
 
+type CHANNEL = {
+  type: CHANNEL_TYPES;
+  name: string;
+  id: string;
+  users: number;
+};
+
+type SOCKET_MESSAGE = "connected" | "wrongpassword" | "connerr" | MESSAGE;
+
+// utils
 type ObjectValues<T> = T[keyof T];
-
-type PUBLIC_CHANNEL = {
-  name: string;
-  id: string;
-  users: number;
-};
-
-type PRIVATE_CHANNEL = {
-  name: string;
-  id: string;
-  users: number;
-};

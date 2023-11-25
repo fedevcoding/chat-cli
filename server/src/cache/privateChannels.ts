@@ -1,6 +1,6 @@
-export const privateChannels: PRIVATE_CHANNEL[] = [];
+export const privateChannels: CHANNEL<CHANNEL_TYPES.PRIVATE>[] = [];
 
-export const addPrivateChannel = (channel: PRIVATE_CHANNEL) => {
+export const addPrivateChannel = (channel: CHANNEL<CHANNEL_TYPES.PRIVATE>) => {
   if (privateChannels.find(c => c.name === channel.name)) throw new Error("Channel name already exists");
   privateChannels.push(channel);
 };

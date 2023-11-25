@@ -25,10 +25,10 @@ router.post("/", (req, res) => {
       return;
     }
 
-    const channel: PUBLIC_CHANNEL = {
+    const channel: CHANNEL<CHANNEL_TYPES.PUBLIC> = {
       id: getRandomId(),
       name,
-      type: "public",
+      type: CHANNEL_TYPES.PUBLIC,
       users: 0,
     };
     addPublicChannel(channel);

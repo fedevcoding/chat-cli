@@ -5,12 +5,18 @@ import { USER } from "@/data/userInfo";
 import { main } from "@/main";
 
 export const joinChat = () => {
+  if (!USER.channel) {
+    throw new Error("No channel selected");
+  }
+
+  const query: SocketQuery = USER.channel;
+
   const socket = io(WS_SERVER_URL, {
-    query: { ...USER.channel },
+    query: { ...query },
   });
 
-  socket.on("message", async json => {
-    if (json === "connected") {
+  socket.on("message", async (message: SOCKET_MESSAGE) => {
+    if (message === "connected") {
       USER.setConnected(true);
 
       logger.info(`${SYSTEM_NAME}: `, "Connected to server");
@@ -19,14 +25,14 @@ export const joinChat = () => {
       return;
     }
 
-    if (json === "wrongpassword") {
+    if (message === "wrongpassword") {
       logger.info(`${SYSTEM_NAME}: `, "Wrong password.\n");
       socket.disconnect();
       main();
       return;
     }
 
-    if (json === "connerr") {
+    if (message === "connerr") {
       logger.info(`${SYSTEM_NAME}: `, "Something went wrong while connecting.\n");
       socket.disconnect();
       main();
@@ -36,7 +42,6 @@ export const joinChat = () => {
     const { id } = USER;
 
     if (!USER.name) return;
-    const message: MESSAGE = json;
 
     // skip logging person joined if it's the current user
     if (message.referenceId === id && message.type === "join") return;

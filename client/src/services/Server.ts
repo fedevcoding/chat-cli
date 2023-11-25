@@ -4,9 +4,9 @@ import axios from "axios";
 class Server {
   constructor() {}
 
-  async fetchPublicChannels(): Promise<PUBLIC_CHANNEL[]> {
+  async fetchPublicChannels(): Promise<CHANNEL[]> {
     try {
-      const data = await axios.get<PUBLIC_CHANNEL[]>(SERVER_ROUTES.PUBLIC_CHANNELS);
+      const data = await axios.get<CHANNEL[]>(SERVER_ROUTES.PUBLIC_CHANNELS);
       const channels = data.data;
 
       return channels;
@@ -15,9 +15,9 @@ class Server {
     }
   }
 
-  async fetchPrivateChannels(): Promise<PRIVATE_CHANNEL[]> {
+  async fetchPrivateChannels(): Promise<CHANNEL[]> {
     try {
-      const data = await axios.get<PRIVATE_CHANNEL[]>(SERVER_ROUTES.PRIVATE_CHANNELS);
+      const data = await axios.get<CHANNEL[]>(SERVER_ROUTES.PRIVATE_CHANNELS);
       const channels = data.data;
 
       return channels;
