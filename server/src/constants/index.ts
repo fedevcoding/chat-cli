@@ -1,2 +1,4 @@
-export const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+import { getEnvs } from "@/utils/getEnv";
+
+export const PORT = parseInt(getEnvs("PORT"));
 export const SYSTEM_NAME = "System";

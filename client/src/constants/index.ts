@@ -1,6 +1,8 @@
+import { getEnvs } from "@/utils/getEnv";
+
 export const PORT = 3000;
-export const WS_SERVER_URL = `ws://localhost:${PORT}`;
-export const SERVER_URL = `http://localhost:${PORT}`;
+export const WS_SERVER_URL = getEnvs("WS_SERVER_URL");
+export const SERVER_URL = getEnvs("SERVER_URL");
 
 export const SYSTEM_NAME = "System";
 
