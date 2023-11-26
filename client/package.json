@@ -7,7 +7,7 @@
     "dev": "tsc-watch --onSuccess \"npm start\"",
     "start": "node dist/index.js",
     "build": "tsc",
-    "package": "npm run build && pkg -t node16-win-x64 -o exe/cli ."
+    "package": "npm run build && pkg -t node16-win-x64 -o ../installer/program/cli.exe ."
   },
   "keywords": [],
   "author": "",
