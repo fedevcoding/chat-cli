@@ -6,6 +6,8 @@ import { createPublicChannel } from "./utils/createPublicChannel";
 import { AxiosError } from "axios";
 import { createPrivateChannel } from "./utils/createPrivateChannel";
 import { choosePrivateChannel } from "./utils/getPrivateChannels";
+import { wait } from "./utils";
+import { WAIT_BEFORE_EXIT } from "./constants";
 
 export async function main() {
   try {
@@ -46,11 +48,13 @@ export async function main() {
         break;
     }
   } catch (e) {
-    if (e instanceof AxiosError) {
+    if (e instanceof AxiosError && e.response?.headers["content-type"] === "application/json") {
       console.log(e.response?.data);
-      return;
+      await wait(WAIT_BEFORE_EXIT);
+      process.exit(1);
     }
     console.log("Something went wrong, try again later.");
-    return;
+    await wait(WAIT_BEFORE_EXIT);
+    process.exit(1);
   }
 }

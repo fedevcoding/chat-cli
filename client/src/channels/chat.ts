@@ -1,6 +1,6 @@
 import io from "socket.io-client";
-import { formatName, logger, removeLastLine } from "@/utils";
-import { WS_SERVER_URL, SYSTEM_NAME } from "@/constants";
+import { formatName, logger, removeLastLine, wait } from "@/utils";
+import { WS_SERVER_URL, SYSTEM_NAME, WAIT_BEFORE_EXIT } from "@/constants";
 import { USER } from "@/data/userInfo";
 
 export const joinChat = () => {
@@ -27,12 +27,14 @@ export const joinChat = () => {
     if (message === "wrongpassword") {
       logger.info(`${SYSTEM_NAME}: `, "Wrong password.");
       console.log("\n");
+      await wait(WAIT_BEFORE_EXIT);
       process.exit(1);
     }
 
     if (message === "connerr") {
       logger.info(`${SYSTEM_NAME}: `, "Something went wrong while connecting.");
       console.log("\n");
+      await wait(WAIT_BEFORE_EXIT);
       process.exit(1);
     }
 

@@ -17,3 +17,5 @@ export const formatName = (name: string | null, id: string, userId: string, from
   fromSystem ? (name as string) : id === userId ? "You" : name ?? "";
 
 export const logger = log;
+
+export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

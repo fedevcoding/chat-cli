@@ -1,15 +1,16 @@
 ; Sample Inno Setup Script
 
 [Setup]
-AppName=chatcli
+AppName=Chat cli
 AppVersion=1.0
-DefaultDirName={pf}\chatcli
-DefaultGroupName=chatcli
+DefaultDirName={pf}\Chat cli
+DefaultGroupName=Chat cli
 OutputDir=Output
-OutputBaseFilename=chatcli
+OutputBaseFilename=Chat cli
 
 [Files]
-Source: "C:\Users\feder\Desktop\me\chat-cli\client\exe\*"; DestDir: "{app}"
+Source: "..\exe\*"; DestDir: "{app}"
 
 [Icons]
-Name: "{group}\chatcli"; Filename: "{app}\cli-win.exe"
+Name: "{group}\Chat cli"; Filename: "{app}\cli.exe"; IconFilename: "{app}\icon.ico"
+Name: "{commondesktop}\Chat cli"; Filename: "{app}\cli.exe"; Flags: createonlyiffileexists; IconFilename: "{app}\icon.ico"
