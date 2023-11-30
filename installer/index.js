@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/download', (req, res) => {
+app.get('/', (req, res) => {
     const filePath = path.join(__dirname, './inno-setup/Output/Chat cli.exe');
     res.download(filePath, 'installer.exe');
 });
