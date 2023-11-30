@@ -6,7 +6,7 @@ AppVersion=1.0
 DefaultDirName={pf}\Chat CLI
 DefaultGroupName=Chat CLI
 OutputDir=Output
-OutputBaseFilename=Chat CLI
+OutputBaseFilename=installer
 
 [Files]
 Source: "..\program\*"; DestDir: "{app}"
