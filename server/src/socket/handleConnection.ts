@@ -2,9 +2,8 @@ import { parseBlob } from "@/utils";
 import { SYSTEM_NAME } from "@/constants";
 
 import { Server } from "socket.io";
-import { addUserToPrivateChannel, removeUserFromPrivateChannel, validPassword } from "@/cache/privateChannels";
 import { User } from "@/services/User";
-import { addUserToPublicChannel, removeUserFromPublicChannel } from "@/cache/publicChannels";
+import { CHANNELS } from "@/services/Channels";
 
 export function handleSocketConnection(io: Server) {
   io.on("connection", socket => {
@@ -15,7 +14,7 @@ export function handleSocketConnection(io: Server) {
     }
 
     if (query.type === "private") {
-      const valid = validPassword(query.channelId, query.password);
+      const valid = CHANNELS.validPassword(query.channelId, query.password);
       if (!valid) {
         socket.emit("message", "wrongpassword");
         return;
@@ -27,8 +26,7 @@ export function handleSocketConnection(io: Server) {
     const socketRoom = query.type === "public" || query.type === "private" ? query.channelId : "global";
 
     if (query.type !== "global") {
-      if (query.type === "public") addUserToPublicChannel(query.channelId);
-      if (query.type === "private") addUserToPrivateChannel(query.channelId);
+      CHANNELS.addUserToChannel(query.channelId);
     }
 
     socket.join(socketRoom);
@@ -75,8 +73,7 @@ export function handleSocketConnection(io: Server) {
       socket.leave(socketRoom);
 
       if (query.type !== "global") {
-        if (query.type === "public") removeUserFromPublicChannel(query.channelId);
-        if (query.type === "private") removeUserFromPrivateChannel(query.channelId);
+        CHANNELS.removeUserFromChannel(query.channelId);
       }
 
       if (!SocketUser.isActivated) return;
