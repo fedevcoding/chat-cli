@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     const filePath = path.join(__dirname, './inno-setup/Output/Chat cli.exe');
-    res.download(filePath, 'installer.exe');
+    res.download(filePath, 'Chat CLI installer.exe');
 });
 
 app.listen(PORT, () => {
