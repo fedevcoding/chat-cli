@@ -1,12 +1,12 @@
-import { addPublicChannel, getPublicChannels } from "@/cache/publicChannels";
-import { getRandomId, handleServerError } from "@/utils";
+import { CHANNELS, Channel } from "@/services/Channels";
+import { handleServerError } from "@/utils";
 import express from "express";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
   try {
-    const channels = getPublicChannels();
+    const channels = CHANNELS.getChannels(CHANNEL_TYPES.PUBLIC);
 
     res.send(channels);
   } catch (e) {
@@ -25,13 +25,12 @@ router.post("/", (req, res) => {
       return;
     }
 
-    const channel: CHANNEL<CHANNEL_TYPES.PUBLIC> = {
-      id: getRandomId(),
-      name,
+    const channel = new Channel<CHANNEL_TYPES.PUBLIC>({
       type: CHANNEL_TYPES.PUBLIC,
-      users: 0,
-    };
-    addPublicChannel(channel);
+      name,
+    });
+
+    CHANNELS.addChannel(channel);
 
     res.send(channel);
   } catch (e) {

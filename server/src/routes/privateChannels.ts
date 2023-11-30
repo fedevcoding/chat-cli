@@ -1,12 +1,12 @@
-import { addPrivateChannel, getPivateChannels } from "@/cache/privateChannels";
-import { getRandomId, handleServerError } from "@/utils";
+import { CHANNELS, Channel } from "@/services/Channels";
+import { handleServerError } from "@/utils";
 import express from "express";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
   try {
-    const channels = getPivateChannels();
+    const channels = CHANNELS.getChannels(CHANNEL_TYPES.PRIVATE);
 
     res.send(channels);
   } catch (e) {
@@ -25,14 +25,8 @@ router.post("/", (req, res) => {
       return;
     }
 
-    const channel: CHANNEL<CHANNEL_TYPES.PRIVATE> = {
-      id: getRandomId(),
-      name,
-      password: password,
-      type: CHANNEL_TYPES.PRIVATE,
-      users: 0,
-    };
-    addPrivateChannel(channel);
+    const channel = new Channel<CHANNEL_TYPES.PRIVATE>({ type: CHANNEL_TYPES.PRIVATE, name, password });
+    CHANNELS.addChannel(channel);
 
     res.send(channel);
   } catch (e) {

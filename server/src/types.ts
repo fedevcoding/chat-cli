@@ -16,13 +16,11 @@ type CHANNEL<T extends CHANNEL_TYPES> = T extends CHANNEL_TYPES.PRIVATE
   ? {
       type: T;
       name: string;
-      id: string;
       password: string;
     }
   : {
       type: T;
       name: string;
-      id: string;
     };
 
 type SocketQuery =

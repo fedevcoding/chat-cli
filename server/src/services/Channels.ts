@@ -1,8 +1,10 @@
-function isPrivateChannel(pet: CHANNEL<any>): pet is CHANNEL<CHANNEL_TYPES.PRIVATE> {
-  return (pet as CHANNEL<CHANNEL_TYPES.PRIVATE>).password !== undefined;
+import { getRandomId } from "@/utils";
+
+function isPrivateChannel(channel: CHANNEL<any>): channel is CHANNEL<CHANNEL_TYPES.PRIVATE> {
+  return (channel as CHANNEL<CHANNEL_TYPES.PRIVATE>).password !== undefined;
 }
 
-class Channel<T extends CHANNEL_TYPES> {
+export class Channel<T extends CHANNEL_TYPES> {
   public type: CHANNEL_TYPES;
   public name: string;
   public id: string;
@@ -11,9 +13,9 @@ class Channel<T extends CHANNEL_TYPES> {
 
   constructor(channelData: CHANNEL<T>) {
     this.type = channelData.type;
-    this.id = channelData.id;
+    this.id = getRandomId();
     this.name = channelData.name;
-    this.users = 1;
+    this.users = 0;
 
     if (isPrivateChannel(channelData)) {
       this.password = channelData.password;
