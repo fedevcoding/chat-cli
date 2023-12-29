@@ -1,16 +1,16 @@
-; Sample Inno Setup Script
-
 [Setup]
-AppName=Chat CLI
+#define AppName "Chat CLI"
+
+AppName={#AppName}
 AppVersion=1.0
-DefaultDirName={pf}\Chat CLI
+DefaultDirName={commonpf}\Chat CLI
 DefaultGroupName=Chat CLI
-OutputDir=Output
+OutputDir="..\dist"
 OutputBaseFilename=installer
 
 [Files]
 Source: "..\program\*"; DestDir: "{app}"
 
 [Icons]
-Name: "{group}\Chat CLI"; Filename: "{app}\cli.exe"; IconFilename: "{app}\icon.ico"
-Name: "{commondesktop}\Chat CLI"; Filename: "{app}\cli.exe"; Flags: createonlyiffileexists; IconFilename: "{app}\icon.ico"
+Name: "{group}\{#AppName}"; Filename: "{app}\cli.exe"; IconFilename: "{app}\icon.ico"
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\cli.exe"; Flags: createonlyiffileexists; IconFilename: "{app}\icon.ico"

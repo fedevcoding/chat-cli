@@ -1,4 +1,5 @@
 import { CHANNELS, Channel } from "@/services/Channels";
+import { CHANNEL_TYPES } from "@/types";
 import { handleServerError } from "@/utils";
 import express from "express";
 
@@ -25,7 +26,11 @@ router.post("/", (req, res) => {
       return;
     }
 
-    const channel = new Channel<CHANNEL_TYPES.PRIVATE>({ type: CHANNEL_TYPES.PRIVATE, name, password });
+    const channel = new Channel<CHANNEL_TYPES.PRIVATE>({
+      type: CHANNEL_TYPES.PRIVATE,
+      name,
+      password,
+    });
     CHANNELS.addChannel(channel);
 
     res.send(channel);

@@ -13,9 +13,15 @@ export const removeLastLine = () => {
 
 export const getRandomId = (): string => crypto.randomUUID();
 
-export const formatName = (name: string | null, id: string, userId: string, fromSystem: boolean): string =>
+export const formatName = (
+  name: string | null,
+  id: string,
+  userId: string,
+  fromSystem: boolean,
+): string =>
   fromSystem ? (name as string) : id === userId ? "You" : name ?? "";
 
 export const logger = log;
 
-export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const wait = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

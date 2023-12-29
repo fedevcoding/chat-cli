@@ -1,10 +1,10 @@
-const enum CHANNEL_TYPES {
+export const enum CHANNEL_TYPES {
   GLOBAL = "global",
   PRIVATE = "private",
   PUBLIC = "public",
 }
 
-type MESSAGE = {
+export type MESSAGE = {
   type: "name" | "message" | "join" | "leave";
   name: string | null;
   referenceId: string;
@@ -12,7 +12,7 @@ type MESSAGE = {
   fromSystem: boolean;
 };
 
-type USER_INFO = {
+export type USER_INFO = {
   id: string;
   name: string | null;
   setName: (name: string) => void;
@@ -22,7 +22,7 @@ type USER_INFO = {
   setChannel: (channel: CHANNEL_TYPE) => void;
 };
 
-type CHANNEL_TYPE =
+export type CHANNEL_TYPE =
   | {
       type: CHANNEL_TYPES.GLOBAL;
     }
@@ -36,7 +36,7 @@ type CHANNEL_TYPE =
       password: string;
     };
 
-type SocketQuery =
+export type SocketQuery =
   | {
       type: "global";
     }
@@ -50,14 +50,18 @@ type SocketQuery =
       password: string;
     };
 
-type CHANNEL = {
+export type CHANNEL = {
   type: CHANNEL_TYPES;
   name: string;
   id: string;
   users: number;
 };
 
-type SOCKET_MESSAGE = "connected" | "wrongpassword" | "connerr" | MESSAGE;
+export type SOCKET_MESSAGE =
+  | "connected"
+  | "wrongpassword"
+  | "connerr"
+  | MESSAGE;
 
 // utils
-type ObjectValues<T> = T[keyof T];
+export type ObjectValues<T> = T[keyof T];

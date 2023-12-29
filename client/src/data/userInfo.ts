@@ -1,4 +1,5 @@
 import { getRandomId } from "@/utils";
+import { CHANNEL_TYPE, USER_INFO, ObjectValues } from "@/types";
 
 export const USER: USER_INFO = {
   id: getRandomId(),

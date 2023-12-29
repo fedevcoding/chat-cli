@@ -2,6 +2,7 @@ import io from "socket.io-client";
 import { formatName, logger, removeLastLine, wait } from "@/utils";
 import { WS_SERVER_URL, SYSTEM_NAME, WAIT_BEFORE_EXIT } from "@/constants";
 import { USER } from "@/data/userInfo";
+import { MESSAGE, SOCKET_MESSAGE, SocketQuery } from "@/types";
 
 export const joinChat = () => {
   if (!USER.channel) {
@@ -46,7 +47,12 @@ export const joinChat = () => {
     if (message.referenceId === id && message.type === "join") return;
 
     // format the name of based on who sent the message
-    const name = formatName(message.name, message.referenceId, USER.id, message.fromSystem);
+    const name = formatName(
+      message.name,
+      message.referenceId,
+      USER.id,
+      message.fromSystem,
+    );
 
     logger.info(`${name}: `, message.payload, "\r");
 
@@ -56,7 +62,7 @@ export const joinChat = () => {
     }
   });
 
-  process.stdin.on("data", input => {
+  process.stdin.on("data", (input) => {
     const { name, id, connected } = USER;
 
     if (!connected) return;

@@ -4,9 +4,10 @@ import { SYSTEM_NAME } from "@/constants";
 import { Server } from "socket.io";
 import { User } from "@/services/User";
 import { CHANNELS } from "@/services/Channels";
+import { MESSAGE, SocketQuery } from "@/types";
 
 export function handleSocketConnection(io: Server) {
-  io.on("connection", socket => {
+  io.on("connection", (socket) => {
     const query: SocketQuery = (socket.handshake.query || {}) as SocketQuery;
     if (!query.type) {
       socket.emit("message", "connerr");
@@ -23,7 +24,10 @@ export function handleSocketConnection(io: Server) {
 
     socket.send("connected");
 
-    const socketRoom = query.type === "public" || query.type === "private" ? query.channelId : "global";
+    const socketRoom =
+      query.type === "public" || query.type === "private"
+        ? query.channelId
+        : "global";
 
     if (query.type !== "global") {
       CHANNELS.addUserToChannel(query.channelId);
@@ -33,7 +37,7 @@ export function handleSocketConnection(io: Server) {
 
     const SocketUser = new User();
 
-    socket.on("message", blob => {
+    socket.on("message", (blob) => {
       const message: MESSAGE = parseBlob(blob);
 
       const { type, name, referenceId } = message;
