@@ -69,7 +69,7 @@ export async function main() {
       await wait(WAIT_BEFORE_EXIT);
       process.exit(1);
     }
-    console.log("Something went wrong, try again later.");
+    console.log("Something went wrong, please try again later.");
     await wait(WAIT_BEFORE_EXIT);
     process.exit(1);
   }
