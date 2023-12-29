@@ -4,6 +4,7 @@ import { SYSTEM_NAME } from "@/constants";
 import { Server } from "socket.io";
 import { User } from "@/services/User";
 import { CHANNELS } from "@/services/Channels";
+import { MESSAGE, SocketQuery } from "@/types";
 
 export function handleSocketConnection(io: Server) {
   io.on("connection", (socket) => {

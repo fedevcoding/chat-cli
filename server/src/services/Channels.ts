@@ -2,7 +2,8 @@ import { CHANNEL, CHANNEL_TYPES } from "@/types";
 import { getRandomId } from "@/utils";
 
 function isPrivateChannel(
-  channel: CHANNEL<any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  channel: CHANNEL<any>
 ): channel is CHANNEL<CHANNEL_TYPES.PRIVATE> {
   return (channel as CHANNEL<CHANNEL_TYPES.PRIVATE>).password !== undefined;
 }
@@ -27,6 +28,7 @@ export class Channel<T extends CHANNEL_TYPES> {
 }
 
 class Channels {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public CHANNELS: Channel<any>[] = [];
 
   constructor() {}

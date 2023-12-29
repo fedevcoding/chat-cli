@@ -19,20 +19,22 @@ export async function main() {
         USER.setChannel({ type: CHANNEL_TYPES.GLOBAL });
         joinChat();
         break;
-      case "Join public chat":
+      case "Join public chat": {
         const chatId = await choosePublicChannel();
         USER.setChannel({ type: CHANNEL_TYPES.PUBLIC, channelId: chatId });
         joinChat();
 
         break;
-      case "Create public chat":
+      }
+      case "Create public chat": {
         const channelId = await createPublicChannel();
         USER.setChannel({ type: CHANNEL_TYPES.PUBLIC, channelId });
         joinChat();
 
         break;
+      }
 
-      case "Crate private chat":
+      case "Crate private chat": {
         const { id, password } = await createPrivateChannel();
         USER.setChannel({
           type: CHANNEL_TYPES.PRIVATE,
@@ -41,8 +43,9 @@ export async function main() {
         });
         joinChat();
         break;
+      }
 
-      case "Join private chat":
+      case "Join private chat": {
         const data = await choosePrivateChannel();
         USER.setChannel({
           type: CHANNEL_TYPES.PRIVATE,
@@ -51,6 +54,7 @@ export async function main() {
         });
         joinChat();
         break;
+      }
 
       default:
         console.log("Invalid action");

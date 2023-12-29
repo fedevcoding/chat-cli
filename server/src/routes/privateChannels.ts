@@ -1,4 +1,5 @@
 import { CHANNELS, Channel } from "@/services/Channels";
+import { CHANNEL_TYPES } from "@/types";
 import { handleServerError } from "@/utils";
 import express from "express";
 
