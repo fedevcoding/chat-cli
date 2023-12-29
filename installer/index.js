@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.download("https://fedev-chatcli-s3bucket.s3.eu-west-3.amazonaws.com/installer.exe", 'Chat CLI installer.exe');
+    res.redirect("https://fedev-chatcli-s3bucket.s3.eu-west-3.amazonaws.com/installer.exe");
 });
 
 app.listen(PORT, () => {
