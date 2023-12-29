@@ -19,4 +19,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp /installer/dist/installer.exe s3://fedev-chatcli-s3bucket/installer.exe
+        run: aws s3 sync ./installer/dist/. s3://fedev-chatcli-s3bucket
