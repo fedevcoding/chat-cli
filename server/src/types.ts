@@ -1,10 +1,10 @@
-const enum CHANNEL_TYPES {
+export const enum CHANNEL_TYPES {
   GLOBAL = "global",
   PRIVATE = "private",
   PUBLIC = "public",
 }
 
-type MESSAGE = {
+export type MESSAGE = {
   type: "name" | "message" | "join" | "leave";
   name: string | null;
   referenceId: string;
@@ -12,7 +12,7 @@ type MESSAGE = {
   fromSystem: boolean;
 };
 
-type CHANNEL<T extends CHANNEL_TYPES> = T extends CHANNEL_TYPES.PRIVATE
+export type CHANNEL<T extends CHANNEL_TYPES> = T extends CHANNEL_TYPES.PRIVATE
   ? {
       type: T;
       name: string;
@@ -23,7 +23,7 @@ type CHANNEL<T extends CHANNEL_TYPES> = T extends CHANNEL_TYPES.PRIVATE
       name: string;
     };
 
-type SocketQuery =
+export type SocketQuery =
   | {
       type: "global";
     }

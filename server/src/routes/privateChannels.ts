@@ -25,7 +25,11 @@ router.post("/", (req, res) => {
       return;
     }
 
-    const channel = new Channel<CHANNEL_TYPES.PRIVATE>({ type: CHANNEL_TYPES.PRIVATE, name, password });
+    const channel = new Channel<CHANNEL_TYPES.PRIVATE>({
+      type: CHANNEL_TYPES.PRIVATE,
+      name,
+      password,
+    });
     CHANNELS.addChannel(channel);
 
     res.send(channel);

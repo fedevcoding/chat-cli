@@ -1,6 +1,9 @@
+import { CHANNEL, CHANNEL_TYPES } from "@/types";
 import { getRandomId } from "@/utils";
 
-function isPrivateChannel(channel: CHANNEL<any>): channel is CHANNEL<CHANNEL_TYPES.PRIVATE> {
+function isPrivateChannel(
+  channel: CHANNEL<any>,
+): channel is CHANNEL<CHANNEL_TYPES.PRIVATE> {
   return (channel as CHANNEL<CHANNEL_TYPES.PRIVATE>).password !== undefined;
 }
 
@@ -33,30 +36,30 @@ class Channels {
   }
 
   removeChannel(id: string): void {
-    this.CHANNELS = this.CHANNELS.filter(arr => {
+    this.CHANNELS = this.CHANNELS.filter((arr) => {
       arr.id != id;
     });
   }
 
   getChannels<T extends CHANNEL_TYPES>(type: T): Channel<T>[] {
-    return this.CHANNELS.filter(arr => arr.type === type);
+    return this.CHANNELS.filter((arr) => arr.type === type);
   }
 
   addUserToChannel(id: string): void {
-    const channel = this.CHANNELS.find(arr => arr.id === id);
+    const channel = this.CHANNELS.find((arr) => arr.id === id);
     if (!channel) throw new Error("Channel not found");
     channel.users++;
   }
 
   removeUserFromChannel(id: string) {
-    const channel = this.CHANNELS.find(arr => arr.id === id);
+    const channel = this.CHANNELS.find((arr) => arr.id === id);
     if (!channel) throw new Error("Channel not found");
     channel.users--;
     if (channel.users === 0) this.removeChannel(id);
   }
 
   validPassword(id: string, password: string): boolean {
-    const channel = this.CHANNELS.find(arr => arr.id === id);
+    const channel = this.CHANNELS.find((arr) => arr.id === id);
     if (!channel) throw new Error("Channel not found");
 
     if (!isPrivateChannel(channel)) throw new Error("Channel is not private");

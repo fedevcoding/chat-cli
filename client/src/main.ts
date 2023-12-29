@@ -1,13 +1,14 @@
-import { USER } from "./data/userInfo";
-import { getAction } from "./utils/getAction";
-import { joinChat } from "./channels/chat";
-import { choosePublicChannel } from "./utils/getPublicChannels";
-import { createPublicChannel } from "./utils/createPublicChannel";
+import { USER } from "@/data/userInfo";
+import { getAction } from "@/utils/getAction";
+import { joinChat } from "@/channels/chat";
+import { choosePublicChannel } from "@/utils/getPublicChannels";
+import { createPublicChannel } from "@/utils/createPublicChannel";
 import { AxiosError } from "axios";
-import { createPrivateChannel } from "./utils/createPrivateChannel";
-import { choosePrivateChannel } from "./utils/getPrivateChannels";
-import { wait } from "./utils";
-import { WAIT_BEFORE_EXIT } from "./constants";
+import { createPrivateChannel } from "@/utils/createPrivateChannel";
+import { choosePrivateChannel } from "@/utils/getPrivateChannels";
+import { wait } from "@/utils";
+import { WAIT_BEFORE_EXIT } from "@/constants";
+import { CHANNEL_TYPES } from "@/types";
 
 export async function main() {
   try {
@@ -33,13 +34,21 @@ export async function main() {
 
       case "Crate private chat":
         const { id, password } = await createPrivateChannel();
-        USER.setChannel({ type: CHANNEL_TYPES.PRIVATE, channelId: id, password });
+        USER.setChannel({
+          type: CHANNEL_TYPES.PRIVATE,
+          channelId: id,
+          password,
+        });
         joinChat();
         break;
 
       case "Join private chat":
         const data = await choosePrivateChannel();
-        USER.setChannel({ type: CHANNEL_TYPES.PRIVATE, channelId: data.id, password: data.password });
+        USER.setChannel({
+          type: CHANNEL_TYPES.PRIVATE,
+          channelId: data.id,
+          password: data.password,
+        });
         joinChat();
         break;
 
@@ -48,7 +57,10 @@ export async function main() {
         break;
     }
   } catch (e) {
-    if (e instanceof AxiosError && e.response?.headers["content-type"] === "application/json") {
+    if (
+      e instanceof AxiosError &&
+      e.response?.headers["content-type"] === "application/json"
+    ) {
       console.log(e.response?.data);
       await wait(WAIT_BEFORE_EXIT);
       process.exit(1);
