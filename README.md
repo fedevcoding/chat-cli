@@ -3,7 +3,7 @@
 <img src="./icon.png" width="160"/>
 </center>
 
-## Chat cli is a command line chat app that can be run be run installing the desktop app [here](https://download-chatcli.fedev.me)
+## Chat cli is a command line chat app that can be run installing the desktop app [here](https://download-chatcli.fedev.me) (Only WINDOWS)
 
 ## You can join global chat, create public or private chats and join public or private chats as you like!
 
